@@ -1,8 +1,12 @@
 import os
+from dotenv import load_dotenv
 import streamlit as st
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyArZSjixfC2ClGeWR2uMffnNz5xcHXOua4")
+load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
+genai.configure(api_key=API_KEY)
 
 # Set up the model
 generation_config = {
@@ -81,7 +85,6 @@ convo = model.start_chat(history=[
 ])
 
 
-
 def send_message():
     user_message = st.session_state.user_message
     st.session_state.history.append(f"<div style='text-align: right;'><b>You 🧑</b></div>")
@@ -90,10 +93,11 @@ def send_message():
 
     convo.send_message(user_message)
 
-    # Bot's response
+    # Bots response
     bot_response = convo.last.text
     st.session_state.history.append(f"<div><b>🤖 Chef Pa</b></div>")
-    st.session_state.history.append(f"<div class= bot_message style='text-align: left;  color: black;'> {bot_response}</div>")
+    st.session_state.history.append(
+        f"<div class= bot_message style='text-align: left;  color: black;'> {bot_response}</div>")
 
     # Clear the text input box
     st.session_state.user_message = ""
@@ -103,14 +107,10 @@ def send_message():
 if "history" not in st.session_state:
     st.session_state.history = []
 
-
-
 # Apply custom CSS styles
 st.markdown(
     """
 <style>
-    
-  
     
     .stTextInput > div > div > input {
         background-color: white;
@@ -147,7 +147,7 @@ st.markdown(
         text-align: center;
         border-radius: 10px;
         padding: 10px;
-        margin-bottom: 50px; /* Add some space below the title */
+        margin-bottom: 50px; 
         background-color:#4F4A46;
    
     }
@@ -163,14 +163,12 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 # Display conversation history
 for chat in st.session_state.history:
     st.markdown(chat, unsafe_allow_html=True)  # Allow HTML rendering
 
-# Create the form for user input and submit button
+# Create the form for user input  and button
 with st.form("chat-form"):
-
     column = st.columns((6, 1))
     column[0].text_input("Chat",
                          value=st.session_state.get("user_message", ""),  # Set initial value
@@ -181,4 +179,3 @@ with st.form("chat-form"):
         type="primary",
         on_click=send_message  # Attach the event handler to the button
     )
-
