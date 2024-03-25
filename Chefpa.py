@@ -144,8 +144,6 @@ st.markdown(
         justify-content: center;
         align-items: center;
         text-align: center;
-        
-        
         border-radius: 10px;
         padding: 10px;
         margin-bottom: 50px; /* Add some space below the title */
@@ -169,7 +167,7 @@ st.markdown(
 for chat in st.session_state.history:
     st.markdown(chat, unsafe_allow_html=True)  # Allow HTML rendering
 
-# Create the form for user input
+# Create the form for user input and submit button
 with st.form("chat-form"):
 
     column = st.columns((6, 1))
